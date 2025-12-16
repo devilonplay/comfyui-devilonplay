@@ -51,11 +51,13 @@ RUN pip3 install xformers --index-url https://download.pytorch.org/whl/cu124
 RUN pip3 install https://github.com/Dao-AILab/flash-attention/releases/download/v2.6.3/flash_attn-2.6.3+cu123torch2.4cxx11abiFALSE-cp311-cp311-linux_x86_64.whl
 
 # SageAttention 2.0+ (Build from source for Max Performance)
-# Requires Triton which is not pre-installed in this base
+# We set TORCH_CUDA_ARCH_LIST to force compilation for Ampere/Ada/Hopper
+# This prevents it from failing on CPU-only GitHub Runners
+ENV TORCH_CUDA_ARCH_LIST="8.0;8.6;8.9;9.0"
 RUN pip3 install triton>=3.0.0 && \
     git clone https://github.com/thu-ml/SageAttention.git && \
     cd SageAttention && \
-    pip3 install -e . && \
+    pip3 install . && \
     cd .. && \
     rm -rf SageAttention
 
