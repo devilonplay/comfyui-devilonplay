@@ -57,6 +57,7 @@ ENV TORCH_CUDA_ARCH_LIST="8.0;8.6;8.9;9.0"
 RUN pip3 install triton>=3.0.0 && \
     git clone https://github.com/thu-ml/SageAttention.git && \
     cd SageAttention && \
+    sed -i 's/compute_capabilities = set()/compute_capabilities = { "8.0", "8.6", "8.9", "9.0" }/g' setup.py && \
     pip3 install . && \
     cd .. && \
     rm -rf SageAttention
