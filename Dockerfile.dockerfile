@@ -50,6 +50,9 @@ RUN pip3 install xformers --index-url https://download.pytorch.org/whl/cu124
 # Flash Attention 2 (Pre-built Wheel for Torch 2.4)
 RUN pip3 install https://github.com/Dao-AILab/flash-attention/releases/download/v2.6.3/flash_attn-2.6.3+cu123torch2.4cxx11abiFALSE-cp311-cp311-linux_x86_64.whl
 
+# Copy patch script for SageAttention
+COPY sage_patch.py /sage_patch.py
+
 # SageAttention 2.0+ (Build from source for Max Performance)
 # We set TORCH_CUDA_ARCH_LIST to force compilation for Ampere/Ada/Hopper
 # This prevents it from failing on CPU-only GitHub Runners
@@ -57,13 +60,8 @@ ENV TORCH_CUDA_ARCH_LIST="8.0;8.6;8.9;9.0"
 RUN pip3 install triton>=3.0.0 && \
     git clone https://github.com/thu-ml/SageAttention.git && \
     cd SageAttention && \
-    echo "import re\n\
-    with open('setup.py', 'r') as f: content = f.read()\n\
-    content = re.sub(r'compute_capabilities\s*=\s*set\(\)', 'compute_capabilities = { \"8.0\", \"8.6\", \"8.9\", \"9.0\" }', content)\n\
-    content = re.sub(r'if not compute_capabilities:', 'if False:', content)\n\
-    with open('setup.py', 'w') as f: f.write(content)\n\
-    print('Patch applied!')" > patch_sage.py && \
-    python3 patch_sage.py && \
+    cp /sage_patch.py . && \
+    python3 sage_patch.py && \
     pip3 install . && \
     cd .. && \
     rm -rf SageAttention
