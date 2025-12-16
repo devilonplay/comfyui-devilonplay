@@ -62,7 +62,7 @@ RUN pip3 install triton>=3.0.0 && \
     cd SageAttention && \
     cp /sage_patch.py . && \
     python3 sage_patch.py && \
-    pip3 install . && \
+    pip3 install --no-build-isolation . && \
     cd .. && \
     rm -rf SageAttention
 
