@@ -1,0 +1,7 @@
+*.env
+secrets/
+__pycache__/
+.git/
+output/
+handover.md
+instructions.md
