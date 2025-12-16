@@ -5,3 +5,7 @@ __pycache__/
 output/
 handover.md
 instructions.md
+*.template
+onstart_template.sh
+deployment_guide.md
+vast_secrets.env
