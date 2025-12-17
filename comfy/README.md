@@ -281,3 +281,4 @@ This image is designed for **serious ComfyUI users** running on **cloud GPUs** w
 **Pull the image**: `docker pull devilonplay/comfyui-devilonplay:latest`
 
 **Maintained by @devilonplay** — Optimized for 2025 cloud GPUs.
+<!-- Trigger Build: 2 -->
